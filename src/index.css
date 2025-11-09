@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply m-0 min-h-screen bg-gradient-to-br from-pastel-blush via-white to-pastel-sky font-sans text-ink antialiased;
+}
+
+#root {
+  @apply min-h-screen;
+}
+
+a {
+  @apply font-medium text-pastel-navy underline-offset-4 transition-colors hover:text-ink;
+}
+
+input,
+select,
+textarea {
+  @apply w-full rounded-xl border border-pastel-lilac/60 bg-white/80 px-4 py-3 text-base text-ink shadow-sm outline-none transition focus:border-pastel-navy focus:ring-2 focus:ring-pastel-navy/40;
+}
+
+button {
+  @apply inline-flex items-center justify-center rounded-xl bg-pastel-navy px-5 py-3 text-sm font-semibold text-white shadow-soft transition hover:scale-[1.02] hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pastel-navy disabled:pointer-events-none disabled:opacity-70;
+}
