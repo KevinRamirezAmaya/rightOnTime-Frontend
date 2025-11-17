@@ -4,7 +4,7 @@ import { defineConfig } from 'vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: process.env.NODE_ENV === 'production' 
-    ? '/rightOnTime-Frontend/' 
+  base: process.env.NODE_ENV === 'production'
+    ? `/${process.env.VITE_REPO_NAME || 'rightOnTime-Frontend'}/`
     : '/',
 })
