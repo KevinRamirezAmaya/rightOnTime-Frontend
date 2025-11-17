@@ -31,33 +31,62 @@ jobs:
 
       - name: Run lint
         run: npm run lint
+        continue-on-error: false
 
-      - name: Run tests
+      - name: Run tests with coverage
         run: npm run test:coverage
-
-      - name: Check test coverage
-        uses: artiomtr/jest-coverage-report-action@v2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          test-script: npm run test:coverage
-          annotations: all
+        continue-on-error: false
 
       - name: Build check
         run: npm run build
+        continue-on-error: false
 
-      - name: Comment PR
+      - name: Report coverage summary
+        if: always()
+        run: |
+          if [ -f coverage/coverage-summary.json ]; then
+            echo "## Test Coverage Summary" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo '```json' >> $GITHUB_STEP_SUMMARY
+            cat coverage/coverage-summary.json >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Comment PR with results
         uses: actions/github-script@v7
         if: always()
         with:
           script: |
+            const fs = require('fs');
+            let coverageReport = '';
+            
+            // Try to read coverage summary
+            try {
+              if (fs.existsSync('coverage/coverage-summary.json')) {
+                const coverage = JSON.parse(fs.readFileSync('coverage/coverage-summary.json', 'utf8'));
+                const total = coverage.total;
+                
+                coverageReport = `
+            ### 📊 Coverage Report
+            - **Lines**: ${total.lines.pct}%
+            - **Statements**: ${total.statements.pct}%
+            - **Functions**: ${total.functions.pct}%
+            - **Branches**: ${total.branches.pct}%
+            `;
+              }
+            } catch (error) {
+              coverageReport = '\n_Coverage report not available_';
+            }
+            
             const output = `#### PR Quality Check Results 🎯
-
+            
             ✅ Lint passed
             ✅ Tests passed
             ✅ Build successful
-
+            ${coverageReport}
+            
             *Pipeline executed for commit: ${{ github.sha }}*`;
-
+            
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
