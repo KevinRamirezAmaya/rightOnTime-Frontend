@@ -59,7 +59,7 @@ jobs:
           script: |
             const fs = require('fs');
             let coverageReport = '';
-            
+
             // Try to read coverage summary
             try {
               if (fs.existsSync('coverage/coverage-summary.json')) {
@@ -77,16 +77,16 @@ jobs:
             } catch (error) {
               coverageReport = '\n_Coverage report not available_';
             }
-            
+
             const output = `#### PR Quality Check Results 🎯
-            
+
             ✅ Lint passed
             ✅ Tests passed
             ✅ Build successful
             ${coverageReport}
-            
+
             *Pipeline executed for commit: ${{ github.sha }}*`;
-            
+
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
