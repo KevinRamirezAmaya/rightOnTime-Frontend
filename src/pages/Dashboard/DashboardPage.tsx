@@ -342,6 +342,7 @@ const DashboardPage = () => {
                 className="w-10 h-10 rounded-full flex items-center justify-center bg-gray-100 text-gray-600 hover:bg-red-500 hover:text-white transition-all duration-200 disabled:opacity-50 text-xl font-bold"
                 disabled={isCreating}
                 title="Cerrar"
+                aria-label="Cerrar"
               >
                 ✕
               </button>
