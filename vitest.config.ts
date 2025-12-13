@@ -9,7 +9,8 @@ export default defineConfig({
     setupFiles: './src/setupTests.ts',
     coverage: {
       provider: 'v8',
-      reporter: ['text', 'lcov', 'json-summary'],
+      reporter: ['text', 'json-summary'],
+      reportsDirectory: './coverage-temp',
       include: ['src/**/*.{ts,tsx}'],
       exclude: ['src/main.tsx', 'src/setupTests.ts'],
       thresholds: {
@@ -18,6 +19,7 @@ export default defineConfig({
         functions: 60,
         lines: 60,
       },
+      clean: true,
     },
   },
 })

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import type { ChangeEvent, FormEvent } from 'react'
 
@@ -28,6 +28,11 @@ const DashboardPage = () => {
     phone_number: 0,
   })
 
+  const handleLogout = useCallback(() => {
+    authLogout()
+    navigate('/admin-login', { replace: true })
+  }, [navigate])
+
   useEffect(() => {
     const fetchRecords = async () => {
       try {
@@ -49,7 +54,7 @@ const DashboardPage = () => {
     }
 
     fetchRecords()
-  }, [])
+  }, [handleLogout])
 
   const employees = useMemo(() => {
     const unique = new Map<number, number>()
@@ -117,11 +122,6 @@ const DashboardPage = () => {
       pendingCheckOuts,
     }
   }, [filteredRecords])
-
-  const handleLogout = () => {
-    authLogout()
-    navigate('/admin-login', { replace: true })
-  }
 
   const handleEmployeeFormChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target

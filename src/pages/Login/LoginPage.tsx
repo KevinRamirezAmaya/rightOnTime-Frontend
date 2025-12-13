@@ -36,9 +36,9 @@ const LoginPage = () => {
     setError(null)
 
     try {
-      const response = action === 'checkin' 
-        ? await checkIn(documentId) 
-        : await checkOut(documentId)
+      await (action === 'checkin' 
+        ? checkIn(documentId) 
+        : checkOut(documentId))
 
       const time = new Date().toLocaleTimeString('es-CO', {
         hour: '2-digit',
