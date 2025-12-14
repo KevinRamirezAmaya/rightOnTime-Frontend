@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rightontime-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rightontime-frontend
+  template:
+    metadata:
+      labels:
+        app: rightontime-frontend
+    spec:
+      containers:
+      - name: frontend
+        image: rightontime-frontend:latest
+        imagePullPolicy: IfNotPresent   # 🔥 ESTA LÍNEA
+        ports:
+        - containerPort: 80
