@@ -2,6 +2,8 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { checkIn, checkOut, getAllAttendanceRecords } from '../attendance'
 import * as auth from '../auth'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000'
+
 describe('Attendance Service', () => {
   beforeEach(() => {
     vi.clearAllMocks()
@@ -24,7 +26,7 @@ describe('Attendance Service', () => {
 
       expect(result).toEqual(mockResponse)
       expect(fetch).toHaveBeenCalledWith(
-        'http://127.0.0.1:8000/attendance/checkin/',
+        `${API_BASE_URL}/attendance/checkin/`,
         expect.objectContaining({
           method: 'POST',
           body: JSON.stringify({ document_id: 1234567891 }),
@@ -97,7 +99,7 @@ describe('Attendance Service', () => {
 
       expect(result).toEqual(mockRecords)
       expect(fetch).toHaveBeenCalledWith(
-        'http://127.0.0.1:8000/attendance/all/',
+        `${API_BASE_URL}/attendance/all/`,
         expect.objectContaining({
           headers: expect.objectContaining({
             Authorization: 'Bearer valid-token',
