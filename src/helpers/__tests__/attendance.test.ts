@@ -111,9 +111,9 @@ describe('attendance helpers', () => {
   describe('computeDashboardStats', () => {
     it('should compute stats correctly', () => {
       const records = [
-        { checkIn: '2025-01-15T09:00:00', checkOut: '2025-01-15T17:00:00', employeeId: '1', id: '1' },
-        { checkIn: '2025-01-15T08:30:00', checkOut: '2025-01-15T16:30:00', employeeId: '2', id: '2' },
-        { checkIn: '2025-01-15T09:15:00', checkOut: null, employeeId: '3', id: '3' },
+        { recordId: '1', checkIn: '2025-01-15T09:00:00', checkOut: '2025-01-15T17:00:00', employeeId: 'EMP-001', name: 'John Doe' },
+        { recordId: '2', checkIn: '2025-01-15T08:30:00', checkOut: '2025-01-15T16:30:00', employeeId: 'EMP-002', name: 'Jane Smith' },
+        { recordId: '3', checkIn: '2025-01-15T09:15:00', checkOut: null, employeeId: 'EMP-003', name: 'Bob Johnson' },
       ]
 
       const stats = computeDashboardStats(records)
