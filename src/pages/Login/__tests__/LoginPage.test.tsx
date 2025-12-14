@@ -1,8 +1,19 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 import { AppProvider } from '../../../context/AppContext'
 import LoginPage from '../LoginPage'
+import * as attendanceService from '../../../services/attendance'
+
+const mockNavigate = vi.fn()
+
+vi.mock('react-router-dom', async () => {
+  const actual = await vi.importActual('react-router-dom')
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
+  }
+})
 
 describe('LoginPage', () => {
   beforeEach(() => {
@@ -29,5 +40,14 @@ describe('LoginPage', () => {
     renderComponent()
     const buttons = screen.getAllByRole('button')
     expect(buttons.length).toBeGreaterThan(2) // At least check-in, check-out, and admin buttons
+  })
+
+  it('should navigate to admin page', () => {
+    renderComponent()
+
+    const adminButton = screen.getByRole('button', { name: /admin/i })
+    fireEvent.click(adminButton)
+
+    expect(mockNavigate).toHaveBeenCalledWith('/admin-login')
   })
 })

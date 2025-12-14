@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 import DashboardPage from '../DashboardPage'
 import * as attendanceService from '../../../services/attendance'
@@ -28,8 +28,6 @@ describe('DashboardPage', () => {
       </BrowserRouter>
     )
   }
-
-
 
   it('should show loading state', () => {
     vi.spyOn(attendanceService, 'getAllAttendanceRecords').mockImplementation(
