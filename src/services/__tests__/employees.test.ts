@@ -2,6 +2,8 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createEmployee } from '../employees'
 import * as auth from '../auth'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000'
+
 describe('Employees Service', () => {
   beforeEach(() => {
     vi.clearAllMocks()
@@ -35,7 +37,7 @@ describe('Employees Service', () => {
 
       expect(result).toEqual(mockResponse)
       expect(fetch).toHaveBeenCalledWith(
-        'http://127.0.0.1:8000/employees/',
+        `${API_BASE_URL}/employees/`,
         expect.objectContaining({
           method: 'POST',
           headers: expect.objectContaining({
