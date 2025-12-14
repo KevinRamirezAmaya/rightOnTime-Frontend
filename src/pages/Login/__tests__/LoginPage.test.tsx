@@ -65,7 +65,8 @@ describe('LoginPage', () => {
   it('should handle successful check-in', async () => {
     vi.spyOn(attendanceService, 'checkIn').mockResolvedValue({
       message: 'Ingreso registrado exitosamente',
-      attendance: { id: 1, document_id: '123456', check_in_time: '08:00:00', check_out_time: null }
+      document_id: 123456,
+      timestamp: '2025-01-01T08:00:00Z'
     })
 
     renderComponent()
@@ -102,7 +103,8 @@ describe('LoginPage', () => {
   it('should handle successful check-out', async () => {
     vi.spyOn(attendanceService, 'checkOut').mockResolvedValue({
       message: 'Salida registrada exitosamente',
-      attendance: { id: 1, document_id: '123456', check_in_time: '08:00:00', check_out_time: '17:00:00' }
+      document_id: 123456,
+      timestamp: '2025-01-01T17:00:00Z'
     })
 
     renderComponent()
