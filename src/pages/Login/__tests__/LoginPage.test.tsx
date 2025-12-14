@@ -1,9 +1,8 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest'
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 import { AppProvider } from '../../../context/AppContext'
 import LoginPage from '../LoginPage'
-import * as attendanceService from '../../../services/attendance'
 
 const mockNavigate = vi.fn()
 
