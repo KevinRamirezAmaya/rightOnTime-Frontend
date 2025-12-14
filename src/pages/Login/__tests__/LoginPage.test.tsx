@@ -1,8 +1,9 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest'
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 import { AppProvider } from '../../../context/AppContext'
 import LoginPage from '../LoginPage'
+import * as attendanceService from '../../../services/attendance'
 
 const mockNavigate = vi.fn()
 
@@ -48,5 +49,72 @@ describe('LoginPage', () => {
     fireEvent.click(adminButton)
 
     expect(mockNavigate).toHaveBeenCalledWith('/admin-login')
+  })
+
+  it('should show error when document is empty', async () => {
+    renderComponent()
+
+    const checkInButton = screen.getByRole('button', { name: /marcar ingreso/i })
+    fireEvent.click(checkInButton)
+
+    await waitFor(() => {
+      expect(screen.getByText(/por favor ingresa tu número de documento/i)).toBeInTheDocument()
+    })
+  })
+
+  it('should handle successful check-in', async () => {
+    vi.spyOn(attendanceService, 'checkIn').mockResolvedValue({
+      message: 'Ingreso registrado exitosamente',
+      attendance: { id: 1, document_id: '123456', check_in_time: '08:00:00', check_out_time: null }
+    })
+
+    renderComponent()
+
+    const input = screen.getByPlaceholderText(/documento/i)
+    fireEvent.change(input, { target: { value: '123456' } })
+
+    const checkInButton = screen.getByRole('button', { name: /marcar ingreso/i })
+    fireEvent.click(checkInButton)
+
+    await waitFor(() => {
+      expect(attendanceService.checkIn).toHaveBeenCalledWith('123456')
+    })
+  })
+
+  it('should handle check-in error', async () => {
+    vi.spyOn(attendanceService, 'checkIn').mockRejectedValue(
+      new Error('Ya tienes un ingreso activo')
+    )
+
+    renderComponent()
+
+    const input = screen.getByPlaceholderText(/documento/i)
+    fireEvent.change(input, { target: { value: '123456' } })
+
+    const checkInButton = screen.getByRole('button', { name: /marcar ingreso/i })
+    fireEvent.click(checkInButton)
+
+    await waitFor(() => {
+      expect(screen.getByText(/ya tienes un ingreso activo/i)).toBeInTheDocument()
+    })
+  })
+
+  it('should handle successful check-out', async () => {
+    vi.spyOn(attendanceService, 'checkOut').mockResolvedValue({
+      message: 'Salida registrada exitosamente',
+      attendance: { id: 1, document_id: '123456', check_in_time: '08:00:00', check_out_time: '17:00:00' }
+    })
+
+    renderComponent()
+
+    const input = screen.getByPlaceholderText(/documento/i)
+    fireEvent.change(input, { target: { value: '123456' } })
+
+    const checkOutButton = screen.getByRole('button', { name: /marcar salida/i })
+    fireEvent.click(checkOutButton)
+
+    await waitFor(() => {
+      expect(attendanceService.checkOut).toHaveBeenCalledWith('123456')
+    })
   })
 })

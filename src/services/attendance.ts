@@ -28,7 +28,7 @@ export const checkIn = async (documentId: string): Promise<CheckInResponse> => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      document_id: parseInt(documentId, 10),
+      document_id: Number.parseInt(documentId, 10),
     }),
   })
 
@@ -50,7 +50,7 @@ export const checkOut = async (documentId: string): Promise<CheckOutResponse> =>
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      document_id: parseInt(documentId, 10),
+      document_id: Number.parseInt(documentId, 10),
     }),
   })
 

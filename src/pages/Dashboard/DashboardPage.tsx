@@ -83,7 +83,7 @@ const DashboardPage = () => {
     const avgCheckIn = filteredRecords.length > 0
       ? filteredRecords.reduce((sum, r) => {
           const time = r.check_in_time.split(':')
-          return sum + parseInt(time[0]) * 60 + parseInt(time[1])
+          return sum + Number.parseInt(time[0]) * 60 + Number.parseInt(time[1])
         }, 0) / filteredRecords.length
       : 0
     
@@ -94,7 +94,7 @@ const DashboardPage = () => {
     const avgCheckOut = completedRecords.length > 0
       ? completedRecords.reduce((sum, r) => {
           const time = r.check_out_time!.split(':')
-          return sum + parseInt(time[0]) * 60 + parseInt(time[1])
+          return sum + Number.parseInt(time[0]) * 60 + Number.parseInt(time[1])
         }, 0) / completedRecords.length
       : 0
     
@@ -106,8 +106,8 @@ const DashboardPage = () => {
       ? completedRecords.reduce((sum, r) => {
           const checkIn = r.check_in_time.split(':')
           const checkOut = r.check_out_time!.split(':')
-          const inMins = parseInt(checkIn[0]) * 60 + parseInt(checkIn[1])
-          const outMins = parseInt(checkOut[0]) * 60 + parseInt(checkOut[1])
+          const inMins = Number.parseInt(checkIn[0]) * 60 + Number.parseInt(checkIn[1])
+          const outMins = Number.parseInt(checkOut[0]) * 60 + Number.parseInt(checkOut[1])
           return sum + (outMins - inMins)
         }, 0) / completedRecords.length
       : 0
